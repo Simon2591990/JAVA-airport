@@ -1,0 +1,78 @@
+import flight.Flight;
+import flight.FlightManager;
+import luggage.Bag;
+import org.junit.Before;
+import org.junit.Test;
+import people.CabinCrewMember;
+import people.Passenger;
+import people.Pilot;
+import people.Rank;
+import plane.Plane;
+import plane.PlaneType;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+
+public class FlightManagerTest {
+
+    FlightManager flightManager;
+    Flight flight;
+    Pilot pilot;
+    CabinCrewMember crewMember1;
+    CabinCrewMember crewMember2;
+    ArrayList<CabinCrewMember> crewMembers;
+    Plane plane;
+    Passenger passenger;
+    Bag bag;
+    ArrayList<Bag> bags;
+
+
+
+    @Before
+    public void before(){
+        pilot = new Pilot("Simon", Rank.CAPTAIN, "Simon259");
+        plane = new Plane(PlaneType.BOEING747);
+        crewMember1 = new CabinCrewMember("Laura", Rank.FLIGHTATTENDANT);
+        crewMember2 = new CabinCrewMember("Teemo", Rank.FLIGHTATTENDANT);
+        crewMembers = new ArrayList<CabinCrewMember>();
+        crewMembers.add(crewMember1);
+        crewMembers.add(crewMember2);
+        bag = new Bag(20.00);
+        bags = new ArrayList<Bag>();
+        bags.add(bag);
+        passenger = new Passenger("Mr. Passenger", bags);
+
+        flight = new Flight(
+                pilot,
+                crewMembers,
+                plane,
+                "LDN-EDI-123",
+                "LDN",
+                "EDI",
+                "12.00");
+        flightManager = new FlightManager(flight);
+    }
+
+    @Test
+    public void canCalculateWeightLimitPerPassenger() {
+        assertEquals(5.0, flightManager.getWeightAllowancePerPassenger(), 0.01);
+    }
+
+    @Test
+    public void canGetTotalBaggageWeightForAllPassengers() {
+        Passenger passenger2 = new Passenger("Mylo", bags);
+        flight.bookPassenger(passenger);
+        flight.bookPassenger(passenger2);
+        assertEquals(40.00, flightManager.getTotalLuggageWeight(), 0.01);
+    }
+
+    @Test
+    public void canReturnRemainingWeightCapacity() {
+        Passenger passenger2 = new Passenger("Mylo", bags);
+        flight.bookPassenger(passenger);
+        flight.bookPassenger(passenger2);
+        assertEquals(1960, flightManager.getRemainingWeightCapacity(), 0.01);
+
+    }
+}

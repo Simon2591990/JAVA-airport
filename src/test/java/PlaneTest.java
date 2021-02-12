@@ -24,4 +24,5 @@ public class PlaneTest {
         plane.setPlaneType(PlaneType.AIRBUSA320);
         assertEquals(PlaneType.AIRBUSA320, plane.getPlaneType());
     }
+
 }

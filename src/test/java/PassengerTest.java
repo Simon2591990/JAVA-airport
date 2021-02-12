@@ -1,16 +1,27 @@
+import luggage.Bag;
 import org.junit.Before;
 import org.junit.Test;
 import people.Passenger;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
 public class PassengerTest {
 
     Passenger passenger;
+    Bag bag;
+    Bag bag2;
+    ArrayList<Bag> bags;
 
     @Before
+
     public void before(){
-        passenger = new Passenger("Simon", 2);
+        bag = new Bag(20.00);
+        bag2 = new Bag(10.00);
+        bags = new ArrayList<Bag>();
+        bags.add(bag);
+        passenger = new Passenger("Simon", bags);
     }
 
     @Test
@@ -26,12 +37,13 @@ public class PassengerTest {
 
     @Test
     public void hasBags() {
-        assertEquals(2, passenger.getNumberOfBags());
+        assertEquals(1, passenger.getBags().size());
     }
 
     @Test
-    public void canChangeNunmberOfBags() {
-        passenger.setNumberOfBags(3);
-        assertEquals(3, passenger.getNumberOfBags());
+    public void getBaggageWeight() {
+        bags.add(bag2);
+        assertEquals(30.00, passenger.getBaggageWeight(), 0.01);
+
     }
 }

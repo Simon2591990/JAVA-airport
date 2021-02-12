@@ -1,18 +1,26 @@
 package people;
 
+import luggage.Bag;
+
+import java.util.ArrayList;
+
 public class Passenger extends Person{
-    private int numberOfBags;
+    private ArrayList<Bag> bags;
 
-    public Passenger(String name, int numberOfBags) {
+    public Passenger(String name, ArrayList<Bag> bags) {
         super(name);
-        this.numberOfBags = numberOfBags;
+        this.bags = bags;
     }
 
-    public int getNumberOfBags() {
-        return numberOfBags;
+    public ArrayList<Bag> getBags() {
+        return bags;
+    }
+    public double getBaggageWeight(){
+        double totalWeight = 0.0;
+        for (Bag bag : this.bags){
+            totalWeight += bag.getWeight();
+        }
+        return totalWeight;
     }
 
-    public void setNumberOfBags(int numberOfBags) {
-        this.numberOfBags = numberOfBags;
-    }
 }

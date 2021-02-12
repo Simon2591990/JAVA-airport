@@ -2,10 +2,10 @@ package plane;
 
 public enum PlaneType {
 
-    BOEING747(200, 300),
-    BOEING737(100, 200),
-    AIRBUSA330(240, 600),
-    AIRBUSA320(200, 300);
+    BOEING747(400, 2000),
+    BOEING737(200, 1000),
+    AIRBUSA330(300, 1500),
+    AIRBUSA320(200, 1000);
 
 
     private final int capacity;

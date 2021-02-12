@@ -91,4 +91,42 @@ public class Flight {
     public void removeCrewMember(CabinCrewMember crewMember) {
         this.cabinCrew.remove(crewMember);
     }
+
+    public int getAvailableSeats() {
+        return this.plane.getCapacity();
+    }
+
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+
+    public void bookPassenger(Passenger passenger) {
+        if (this.getAvailableSeats() > 0){
+            this.plane.reduceAvailableSeats();
+            this.passengers.add(passenger);
+        }
+
+    }
+
+    public void removePassenger(Passenger passenger) {
+        this.passengers.remove(passenger);
+        this.plane.increaseAvailableSeats();
+    }
+
+    public double getTotalBaggageWeight() {
+        double totalWeight = 0;
+        for (Passenger passenger : this.getPassengers()){
+            totalWeight += passenger.getBaggageWeight();
+        }
+        return totalWeight;
+    }
+
+    public double getRemainingWeightCapacity() {
+        double weightRemaining = this.plane.getWeightLimit();
+        for (Passenger passenger : this.getPassengers()){
+            weightRemaining -= passenger.getBaggageWeight();
+        }
+        return weightRemaining;
+
+    }
 }

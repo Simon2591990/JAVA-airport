@@ -16,4 +16,8 @@ public class CabinCrewMember extends Person {
     public void setRank(Rank rank) {
         this.rank = rank;
     }
+
+    public String relayMessage(){
+        return "Please keep arms and legs inside the vehicle at all times";
+    }
 }

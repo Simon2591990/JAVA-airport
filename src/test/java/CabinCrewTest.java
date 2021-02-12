@@ -35,4 +35,9 @@ public class CabinCrewTest {
         cabinCrewMember.setRank(Rank.FIRSTOFFICER);
         assertEquals(Rank.FIRSTOFFICER, cabinCrewMember.getRank());
     }
+
+    @Test
+    public void canRelayMessageToPassengers() {
+        assertEquals("Please keep arms and legs inside the vehicle at all times", cabinCrewMember.relayMessage());
+    }
 }

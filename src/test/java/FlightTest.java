@@ -1,7 +1,9 @@
 import flight.Flight;
+import luggage.Bag;
 import org.junit.Before;
 import org.junit.Test;
 import people.CabinCrewMember;
+import people.Passenger;
 import people.Pilot;
 import people.Rank;
 import plane.Plane;
@@ -20,6 +22,9 @@ public class FlightTest {
     CabinCrewMember crewMember2;
     ArrayList<CabinCrewMember> crewMembers;
     Plane plane;
+    Passenger passenger;
+    Bag bag;
+    ArrayList<Bag> bags;
 
 
 
@@ -32,6 +37,10 @@ public class FlightTest {
         crewMembers = new ArrayList<CabinCrewMember>();
         crewMembers.add(crewMember1);
         crewMembers.add(crewMember2);
+        bag = new Bag(20.00);
+        bags = new ArrayList<Bag>();
+        bags.add(bag);
+        passenger = new Passenger("Mr. Passenger", bags);
 
         flight = new Flight(
                 pilot,
@@ -127,5 +136,67 @@ public class FlightTest {
     public void canChangeDepartureTime() {
         flight.setDepartureTime("13.00");
         assertEquals("13.00", flight.getDepartureTime());
+    }
+
+    @Test
+    public void canReturnAvailableSeats() {
+        assertEquals(400, flight.getAvailableSeats());
+    }
+
+    @Test
+    public void hasPassengers() {
+        assertEquals(0, flight.getPassengers().size());
+    }
+
+    @Test
+    public void canAddPassenger() {
+        flight.bookPassenger(passenger);
+        assertEquals(1, flight.getPassengers().size());
+    }
+
+    @Test
+    public void canRemovePassenger() {
+        flight.bookPassenger(passenger);
+        flight.removePassenger(passenger);
+        assertEquals(0, flight.getPassengers().size());
+    }
+
+    @Test
+    public void bookingPassengerReducesAvailableSeats() {
+        flight.bookPassenger(passenger);
+        assertEquals(399, flight.getAvailableSeats());
+    }
+
+    @Test
+    public void removingPassengerIncreasesAvailableSeats() {
+        flight.bookPassenger(passenger);
+        flight.removePassenger(passenger);
+        assertEquals(400, flight.getAvailableSeats());
+    }
+
+    @Test
+    public void pilotCanFLyPlane() {
+        assertEquals("I'm flying the plane", flight.getPilot().flyPlane());
+    }
+
+    @Test
+    public void canGetBaggageWeightPerPassenger() {
+        assertEquals(5.00, flight.getPlane().getBaggageAllowance(), 0.01);
+    }
+
+    @Test
+    public void canGetTotalBaggageWeightForAllPassengers() {
+        Passenger passenger2 = new Passenger("Mrs. Passenger", bags);
+        flight.bookPassenger(passenger2);
+        flight.bookPassenger(passenger);
+        assertEquals(40.00, flight.getTotalBaggageWeight(), 0.01);
+    }
+
+    @Test
+    public void canGetRemainingWeightCapacity() {
+        Passenger passenger2 = new Passenger("Mrs. Passenger", bags);
+        flight.bookPassenger(passenger2);
+        flight.bookPassenger(passenger);
+        assertEquals(1960.00, flight.getRemainingWeightCapacity(), 0.01);
     }
 }
