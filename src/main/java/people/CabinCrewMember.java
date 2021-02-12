@@ -2,7 +2,7 @@ package people;
 
 public class CabinCrewMember extends Person {
 
-    Rank rank;
+    private Rank rank;
 
     public CabinCrewMember(String name, Rank rank) {
         super(name);

@@ -1,7 +1,7 @@
 package people;
 
 public class Passenger extends Person{
-    int numberOfBags;
+    private int numberOfBags;
 
     public Passenger(String name, int numberOfBags) {
         super(name);
