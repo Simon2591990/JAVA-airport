@@ -8,7 +8,7 @@ import plane.Plane;
 import plane.PlaneType;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,7 +33,14 @@ public class FlightTest {
         crewMembers.add(crewMember1);
         crewMembers.add(crewMember2);
 
-        flight = new Flight(pilot, crewMembers, plane,"LDN-EDI-123","LDN","EDI","12.00");
+        flight = new Flight(
+                pilot,
+                crewMembers,
+                plane,
+                "LDN-EDI-123",
+                "LDN",
+                "EDI",
+                "12.00");
     }
 
     @Test
@@ -76,5 +83,49 @@ public class FlightTest {
         Plane plane2 = new Plane(PlaneType.BOEING747);
         flight.setPlane(plane2);
         assertEquals(plane2, flight.getPlane());
+    }
+
+    @Test
+    public void hasFlightNumber() {
+        assertEquals("LDN-EDI-123", flight.getFlightNumber());
+    }
+
+    @Test
+    public void canChangeFlightNumber() {
+        flight.setFlightNumber("EDI-LDN-123");
+        assertEquals("EDI-LDN-123", flight.getFlightNumber());
+    }
+
+    @Test
+    public void hasDestination() {
+        assertEquals("LDN", flight.getDestination());
+    }
+
+    @Test
+    public void canChangeDestination() {
+        flight.setDestination("GLW");
+        assertEquals("GLW", flight.getDestination());
+    }
+
+    @Test
+    public void hasDepartureAirport() {
+        assertEquals("EDI", flight.getDepartureAirport());
+    }
+
+    @Test
+    public void canChangeDepartureAirport() {
+        flight.setDepartureAirport("GLW");
+        assertEquals("GLW", flight.getDepartureAirport());
+    }
+
+    @Test
+    public void hasDepartureTime() {
+        assertEquals("12.00", flight.getDepartureTime());
+    }
+
+    @Test
+    public void canChangeDepartureTime() {
+        flight.setDepartureTime("13.00");
+        assertEquals("13.00", flight.getDepartureTime());
     }
 }
