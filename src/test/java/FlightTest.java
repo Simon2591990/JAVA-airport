@@ -223,4 +223,22 @@ public class FlightTest {
         assertEquals(399 , flight.getSeatsRemaining().size());
         assertEquals(true, passenger.getSeatNumber() != null);
     }
+
+    @Test
+    public void PassengersAreNotAssignedASeatAlreadyTakenByAnotherPassengerThatWasBookedOntoTheFlightEarlierThatDay() {
+        Plane privatePlane = new Plane(PlaneType.PRIVATEJET);
+        Flight privateFlight = new Flight(pilot, crewMembers ,privatePlane,"PRV123","EDI","LDN",localDateTime);
+        Passenger passenger1 = new Passenger("Simon1", bags);
+        Passenger passenger2 = new Passenger("Simon2", bags);
+        Passenger passenger3 = new Passenger("Simon3", bags);
+        Passenger passenger4 = new Passenger("Simon4", bags);
+        Passenger passenger5 = new Passenger("Simon5", bags);
+        privateFlight.bookPassenger(passenger1);
+        privateFlight.bookPassenger(passenger2);
+        privateFlight.bookPassenger(passenger3);
+        privateFlight.bookPassenger(passenger4);
+        privateFlight.bookPassenger(passenger5);
+        assertEquals(0, privateFlight.getSeatsRemaining().size());
+
+    }
 }

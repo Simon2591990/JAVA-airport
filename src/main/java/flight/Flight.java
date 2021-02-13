@@ -114,7 +114,6 @@ public class Flight {
             }
             Random rand = new Random();
             int randomSeat = rand.nextInt(this.seatsRemaining.size());
-            randomSeat -= 1;
             passenger.setSeatNumber(this.seatsRemaining.remove(randomSeat));
 
 
