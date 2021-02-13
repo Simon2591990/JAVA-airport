@@ -5,7 +5,9 @@ import people.Passenger;
 import people.Pilot;
 import plane.Plane;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Flight {
     private Pilot pilot;
@@ -15,9 +17,10 @@ public class Flight {
     private String flightNumber;
     private String destination;
     private String departureAirport;
-    private String departureTime;
+    private LocalDateTime departureTime;
+    private ArrayList<Integer> seatsRemaining;
 
-    public Flight(Pilot pilot, ArrayList<CabinCrewMember> cabinCrew, Plane plane, String flightNumber, String destination, String departureAirport, String departureTime) {
+    public Flight(Pilot pilot, ArrayList<CabinCrewMember> cabinCrew, Plane plane, String flightNumber, String destination, String departureAirport, LocalDateTime departureTime) {
         this.pilot = pilot;
         this.cabinCrew = cabinCrew;
         this.plane = plane;
@@ -26,6 +29,8 @@ public class Flight {
         this.departureAirport = departureAirport;
         this.departureTime = departureTime;
         this.passengers = new ArrayList<Passenger>();
+        this.seatsRemaining = new ArrayList<Integer>(this.plane.getCapacity());
+
     }
 
     public Pilot getPilot() {
@@ -76,11 +81,11 @@ public class Flight {
         this.departureAirport = departureAirport;
     }
 
-    public String getDepartureTime() {
-        return departureTime;
+    public LocalDateTime getDepartureTime() {
+        return this.departureTime;
     }
 
-    public void setDepartureTime(String departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
@@ -92,7 +97,7 @@ public class Flight {
         this.cabinCrew.remove(crewMember);
     }
 
-    public int getAvailableSeats() {
+    public int getNumberAvailableSeats() {
         return this.plane.getCapacity();
     }
 
@@ -101,9 +106,21 @@ public class Flight {
     }
 
     public void bookPassenger(Passenger passenger) {
-        if (this.getAvailableSeats() > 0){
-            this.plane.reduceAvailableSeats();
+        if (this.getNumberAvailableSeats() > 0){
+            if (this.seatsRemaining.size() == 0){
+                for (int i = 1; i <= this.plane.getCapacity(); i++){
+                    this.seatsRemaining.add(i);
+                }
+            }
+            Random rand = new Random();
+            int randomSeat = rand.nextInt(this.seatsRemaining.size());
+            randomSeat -= 1;
+            passenger.setSeatNumber(this.seatsRemaining.remove(randomSeat));
+
+
+            this.plane.reduceNumberOfAvailableSeats();
             this.passengers.add(passenger);
+            passenger.setFlight(this);
         }
 
     }
@@ -111,6 +128,7 @@ public class Flight {
     public void removePassenger(Passenger passenger) {
         this.passengers.remove(passenger);
         this.plane.increaseAvailableSeats();
+        this.seatsRemaining.add(passenger.getSeatNumber());
     }
 
     public double getTotalBaggageWeight() {
@@ -128,5 +146,9 @@ public class Flight {
         }
         return weightRemaining;
 
+    }
+
+    public ArrayList<Integer> getSeatsRemaining() {
+        return this.seatsRemaining;
     }
 }

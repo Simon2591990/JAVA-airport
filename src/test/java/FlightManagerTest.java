@@ -10,6 +10,7 @@ import people.Rank;
 import plane.Plane;
 import plane.PlaneType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -26,6 +27,7 @@ public class FlightManagerTest {
     Passenger passenger;
     Bag bag;
     ArrayList<Bag> bags;
+    LocalDateTime departureTime;
 
 
 
@@ -42,6 +44,7 @@ public class FlightManagerTest {
         bags = new ArrayList<Bag>();
         bags.add(bag);
         passenger = new Passenger("Mr. Passenger", bags);
+        departureTime = LocalDateTime.of(2017, 2, 13, 15, 56);
 
         flight = new Flight(
                 pilot,
@@ -50,7 +53,7 @@ public class FlightManagerTest {
                 "LDN-EDI-123",
                 "LDN",
                 "EDI",
-                "12.00");
+                departureTime);
         flightManager = new FlightManager(flight);
     }
 

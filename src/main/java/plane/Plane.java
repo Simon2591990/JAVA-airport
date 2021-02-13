@@ -35,7 +35,7 @@ public class Plane {
     public void setWeightLimit(int weightLimit) {
         this.weightLimit = weightLimit;
     }
-    public void reduceAvailableSeats(){
+    public void reduceNumberOfAvailableSeats(){
         this.capacity -= 1;
     }
     public void increaseAvailableSeats(){

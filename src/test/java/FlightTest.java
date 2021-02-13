@@ -9,6 +9,7 @@ import people.Rank;
 import plane.Plane;
 import plane.PlaneType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
@@ -25,6 +26,7 @@ public class FlightTest {
     Passenger passenger;
     Bag bag;
     ArrayList<Bag> bags;
+    LocalDateTime localDateTime;
 
 
 
@@ -41,6 +43,7 @@ public class FlightTest {
         bags = new ArrayList<Bag>();
         bags.add(bag);
         passenger = new Passenger("Mr. Passenger", bags);
+        localDateTime = LocalDateTime.of(2017, 2, 13, 15, 56);
 
         flight = new Flight(
                 pilot,
@@ -49,7 +52,8 @@ public class FlightTest {
                 "LDN-EDI-123",
                 "LDN",
                 "EDI",
-                "12.00");
+                localDateTime
+                );
     }
 
     @Test
@@ -129,18 +133,19 @@ public class FlightTest {
 
     @Test
     public void hasDepartureTime() {
-        assertEquals("12.00", flight.getDepartureTime());
+        assertEquals("2017-02-13T15:56", flight.getDepartureTime().toString());
     }
 
     @Test
     public void canChangeDepartureTime() {
-        flight.setDepartureTime("13.00");
-        assertEquals("13.00", flight.getDepartureTime());
+        LocalDateTime newDepartureTime = LocalDateTime.of(2017, 2, 13, 15, 56);
+        flight.setDepartureTime(newDepartureTime);
+        assertEquals("2017-02-13T15:56", flight.getDepartureTime().toString());
     }
 
     @Test
     public void canReturnAvailableSeats() {
-        assertEquals(400, flight.getAvailableSeats());
+        assertEquals(400, flight.getNumberAvailableSeats());
     }
 
     @Test
@@ -164,14 +169,14 @@ public class FlightTest {
     @Test
     public void bookingPassengerReducesAvailableSeats() {
         flight.bookPassenger(passenger);
-        assertEquals(399, flight.getAvailableSeats());
+        assertEquals(399, flight.getNumberAvailableSeats());
     }
 
     @Test
     public void removingPassengerIncreasesAvailableSeats() {
         flight.bookPassenger(passenger);
         flight.removePassenger(passenger);
-        assertEquals(400, flight.getAvailableSeats());
+        assertEquals(400, flight.getNumberAvailableSeats());
     }
 
     @Test
@@ -198,5 +203,24 @@ public class FlightTest {
         flight.bookPassenger(passenger2);
         flight.bookPassenger(passenger);
         assertEquals(1960.00, flight.getRemainingWeightCapacity(), 0.01);
+    }
+
+    @Test
+    public void passengerIsAssignedFlightOnBooking() {
+        flight.bookPassenger(passenger);
+        assertEquals(flight, passenger.getFlight());
+
+    }
+
+    @Test
+    public void flightHasArrayOfRemainingSeats() {
+        assertEquals(0, flight.getSeatsRemaining().size());
+    }
+
+    @Test
+    public void passengerIsAssignedSeatNumberWhenBooked() {
+        flight.bookPassenger(passenger);
+        assertEquals(399 , flight.getSeatsRemaining().size());
+        assertEquals(true, passenger.getSeatNumber() != null);
     }
 }
